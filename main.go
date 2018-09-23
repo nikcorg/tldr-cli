@@ -73,7 +73,20 @@ func renderArchives(out io.Writer, archives []types.Archive) {
 	}
 }
 
-const archiveDir = "../archive"
+var (
+	tldrHome   string
+	archiveDir string
+)
+
+func init() {
+	tldrHome := os.Getenv("TLDR_HOME")
+
+	if tldrHome == "" {
+		log.Fatal(fmt.Errorf("TLDR_HOME not found in environment"))
+	}
+
+	archiveDir = tldrHome + "/archive"
+}
 
 func main() {
 	archives := []types.Archive{}
