@@ -1,0 +1,29 @@
+{{define "Layout" -}}
+# TL;DR
+
+## Interesting stuff I come across
+
+Because all those open browser tabs that I'll "read later" have to go somewhere.
+
+Random subjects, but mostly tech.
+
+{{range .Archives}}
+## {{.Title}}
+{{range .Entries}}{{template "Entry" .}}{{end}}
+{{end}}
+
+Inspired by https://github.com/chtefi/every-single-day-i-tldr
+{{end}}
+
+{{define "Entry"}}
+- [{{- if not .Unread}}x{{else}} {{end}}] {{.Title}}
+  {{.URL}}{{- if .Source}}
+  Source: {{.Source}}{{end}}{{- if .Related}}
+  See also:
+  {{- template "Related" .Related}}{{end}}{{end}}
+
+{{define "Related"}}{{range .}}{{if IsConcise .}}
+    - {{.Title}}
+      {{.URL}}
+{{- else}}
+    - {{.URL}}{{end}}{{end}}{{end}}
