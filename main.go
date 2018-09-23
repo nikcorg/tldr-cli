@@ -13,6 +13,15 @@ var (
 	archiveDir string
 )
 
+func render() {
+	archives := []archive.Archive{}
+	for _, file := range archive.ScanArchive(archiveDir) {
+		archives = append(archives, archive.LoadFile(archiveDir+"/"+file))
+	}
+
+	archive.RenderToMarkdown(os.Stdout, archives)
+}
+
 func init() {
 	tldrHome := os.Getenv("TLDR_HOME")
 
@@ -24,10 +33,19 @@ func init() {
 }
 
 func main() {
-	archives := []archive.Archive{}
-	for _, file := range archive.ScanArchive(archiveDir) {
-		archives = append(archives, archive.LoadFile(archiveDir+"/"+file))
-	}
+	args := os.Args[1:]
 
-	archive.RenderToMarkdown(os.Stdout, archives)
+	if len(args) > 0 {
+		cmd := args[0]
+
+		switch cmd {
+		case "render":
+			render()
+			break
+		default:
+			log.Fatalf("Unknown command: %s", args[0])
+		}
+	} else {
+		log.Fatalf("Interactive mode not yet implemented")
+	}
 }
