@@ -69,6 +69,11 @@ func (x SimpleEntry) IsConcise() bool {
 	return false
 }
 
+// MarshalYAML is a custom yaml marshaler for SimpleEntry
+func (x SimpleEntry) MarshalYAML() (interface{}, error) {
+	return x.URL, nil
+}
+
 func mapRelatedEntry(related interface{}) RelatedEntry {
 	if reflect.TypeOf(related).Kind() == reflect.Map {
 		asMap := related.(map[interface{}]interface{})
