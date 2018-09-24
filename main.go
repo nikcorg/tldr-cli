@@ -5,42 +5,33 @@ import (
 	"log"
 	"os"
 
-	"github.com/nikcorg/tldr-cli/archive"
+	"github.com/nikcorg/tldr-cli/cmd"
 )
 
-var (
-	tldrHome   string
-	archiveDir string
-)
-
-func render() {
-	archives := []archive.Archive{}
-	for _, file := range archive.ScanArchive(archiveDir) {
-		archives = append(archives, archive.LoadFile(archiveDir+"/"+file))
-	}
-
-	archive.RenderToMarkdown(os.Stdout, archives)
-}
+var config config.Config
 
 func init() {
-	tldrHome := os.Getenv("TLDR_HOME")
+	config := config.Config{}
 
-	if tldrHome == "" {
+	config.Home = os.Getenv("TLDR_HOME")
+
+	if config.home == "" {
 		log.Fatal(fmt.Errorf("TLDR_HOME not found in environment"))
 	}
 
-	archiveDir = tldrHome + "/archive"
+	config.Archive = fmt.Sprintf("%s/archive", config.Home)
+	config.Format
 }
 
 func main() {
 	args := os.Args[1:]
 
 	if len(args) > 0 {
-		cmd := args[0]
+		cmdArg := args[0]
 
-		switch cmd {
+		switch cmdArg {
 		case "render":
-			render()
+			cmd.Render(config, args...)
 			break
 		default:
 			log.Fatalf("Unknown command: %s", args[0])

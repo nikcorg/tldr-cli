@@ -3,37 +3,38 @@ package archive
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
 	"sort"
 	"strings"
 )
 
-type filesByName []os.FileInfo
+type stringSlice []string
 
-func (x filesByName) Len() int {
-	return len(x)
+func (xs stringSlice) Len() int {
+	return len(xs)
 }
 
-func (x filesByName) Swap(a, b int) {
-	x[a], x[b] = x[b], x[a]
+func (xs stringSlice) Swap(a, b int) {
+	xs[a], xs[b] = xs[b], xs[a]
 }
 
-func (x filesByName) Less(a, b int) bool {
-	return x[a].Name() < x[b].Name()
+func (xs stringSlice) Less(a, b int) bool {
+	return xs[a] < xs[b]
 }
 
-// ScanArchive returns a list of yaml files in the archive directory
-func ScanArchive(archiveDir string) []string {
+// Scan returns a list of yaml files in the archive directory
+func Scan(archiveDir string) []string {
 	if infos, err := ioutil.ReadDir(archiveDir); err != nil {
 		panic(fmt.Errorf("Error reading archive dir: %+v", err))
 	} else {
-		sort.Sort(sort.Reverse(filesByName(infos)))
 		names := []string{}
 		for _, info := range infos {
 			if name := info.Name(); strings.HasSuffix(name, "yaml") {
 				names = append(names, name)
 			}
 		}
+
+		sort.Sort(sort.Reverse(stringSlice(names)))
+
 		return names
 	}
 }

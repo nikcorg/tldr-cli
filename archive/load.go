@@ -6,8 +6,8 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-// LoadFile loads an archive file and massages the types
-func LoadFile(file string) Archive {
+// Load loads an archive file returning an Archive
+func Load(file string) Archive {
 	data, ioerr := ioutil.ReadFile(file)
 
 	if ioerr != nil {
