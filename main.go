@@ -7,6 +7,8 @@ import (
 
 	"github.com/nikcorg/tldr-cli/cmd"
 	"github.com/nikcorg/tldr-cli/config"
+
+	"github.com/urfave/cli"
 )
 
 var (
@@ -33,17 +35,13 @@ func init() {
 }
 
 func main() {
-	args := os.Args[1:]
-
-	if len(args) > 0 {
-		cmdArg := args[0]
-
-		if command, found := commands[cmdArg]; found {
-			command.Configure(cfg).Run(args[1:]...)
-		} else {
-			fmt.Printf("Command not found: %s", cmdArg)
-			os.Exit(1)
+	if len(os.Args) > 0 {
+		app := cli.NewApp()
+		app.Commands = []cli.Command{}
+		for _, cmd := range commands {
+			app.Commands = append(app.Commands, cmd.Configure(cfg))
 		}
+		app.Run(os.Args)
 	} else {
 		log.Fatalf("Interactive mode not yet implemented")
 	}
