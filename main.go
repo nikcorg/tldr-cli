@@ -9,7 +9,13 @@ import (
 	"github.com/nikcorg/tldr-cli/config"
 )
 
-var cfg *config.Config
+var (
+	cfg      *config.Config
+	commands = cmd.CommandMap{
+		"render": cmd.Render{},
+		"add":    cmd.Add{},
+	}
+)
 
 func init() {
 	cfg = &config.Config{
@@ -31,15 +37,11 @@ func main() {
 	if len(args) > 0 {
 		cmdArg := args[0]
 
-		switch cmdArg {
-		case "render":
-			cmd.Render(cfg, args[1:]...)
-			break
-		case "add":
-			cmd.Add(cfg, args[1:]...)
-			break
-		default:
-			log.Fatalf("Unknown command: %s", args[0])
+		if command, found := commands[cmdArg]; found {
+			command.Configure(cfg).Run(args[1:]...)
+		} else {
+			fmt.Printf("Command not found: %s", cmdArg)
+			os.Exit(1)
 		}
 	} else {
 		log.Fatalf("Interactive mode not yet implemented")

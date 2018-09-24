@@ -9,13 +9,23 @@ import (
 	"github.com/nikcorg/tldr-cli/config"
 )
 
-// Add will create a new archive or amend the day's archive if it exists
-func Add(cfg *config.Config, args ...string) {
-	fmt.Printf("Add %+v, args %+v", cfg, args)
-	filename := fmt.Sprintf("%s/%s.yaml", cfg.Archive, time.Now().Format(cfg.Format))
+// Add is the Add command
+type Add struct {
+	cfg *config.Config
+}
+
+// Configure configures the Add command
+func (cmd Add) Configure(c *config.Config) RunnableCommand {
+	return Add{c}
+}
+
+// Run runs the Add command
+func (cmd Add) Run(args ...string) {
+	fmt.Printf("Add %+v, args %+v", cmd.cfg, args)
+	filename := fmt.Sprintf("%s/%s.yaml", cmd.cfg.Archive, time.Now().Format(cmd.cfg.Format))
 
 	a := archive.Archive{
-		Title:   time.Now().Format("2006-01-02"),
+		Title:   time.Now().Format(cmd.cfg.TitleFormat),
 		Entries: []archive.Entry{},
 	}
 
