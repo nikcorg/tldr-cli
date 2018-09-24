@@ -19,7 +19,8 @@ var (
 
 func init() {
 	cfg = &config.Config{
-		Format: "2006-01-02",
+		Format:      "2006-01-02",
+		TitleFormat: "2006-01-02",
 	}
 
 	cfg.Home = os.Getenv("TLDR_HOME")
