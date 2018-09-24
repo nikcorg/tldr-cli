@@ -35,6 +35,9 @@ func main() {
 		case "render":
 			cmd.Render(cfg, args[1:]...)
 			break
+		case "add":
+			cmd.Add(cfg, args[1:]...)
+			break
 		default:
 			log.Fatalf("Unknown command: %s", args[0])
 		}
