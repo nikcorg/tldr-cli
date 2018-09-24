@@ -21,7 +21,6 @@ func (cmd Add) Configure(c *config.Config) RunnableCommand {
 
 // Run runs the Add command
 func (cmd Add) Run(args ...string) {
-	fmt.Printf("Add %+v, args %+v", cmd.cfg, args)
 	filename := fmt.Sprintf("%s/%s.yaml", cmd.cfg.Archive, time.Now().Format(cmd.cfg.Format))
 
 	a := archive.Archive{
