@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/nikcorg/tldr-cli/cmd"
+	"github.com/nikcorg/tldr-cli/cmd/add"
 	"github.com/nikcorg/tldr-cli/config"
 
 	"github.com/urfave/cli"
@@ -15,7 +16,7 @@ var (
 	cfg      *config.Config
 	commands = cmd.CommandMap{
 		"render": cmd.Render{},
-		"add":    cmd.Add{},
+		"add":    add.Add{},
 	}
 )
 
