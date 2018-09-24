@@ -31,12 +31,13 @@ func (cmd Add) Configure(c *config.Config) cli.Command {
 	confd := Add{cfg: c}
 
 	return cli.Command{
-		Name:    "add",
-		Aliases: []string{"a"},
+		Name:      "add",
+		Aliases:   []string{"a"},
+		ArgsUsage: "URL Anything that follows becomes the title",
 		Flags: []cli.Flag{
-			cli.BoolFlag{Name: "unread, u"},
-			cli.StringFlag{Name: "source, s"},
-			cli.StringSliceFlag{Name: "related, r"},
+			cli.BoolFlag{Name: "unread, u", Usage: "mark entry as unread"},
+			cli.StringFlag{Name: "source, s", Usage: "the source `URL`"},
+			cli.StringSliceFlag{Name: "related, r", Usage: "a related `URL`, as many as you like"},
 		},
 		Action: func(ctx *cli.Context) {
 			confd.flags = flags{
