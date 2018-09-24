@@ -6,21 +6,23 @@ import (
 	"os"
 
 	"github.com/nikcorg/tldr-cli/cmd"
+	"github.com/nikcorg/tldr-cli/config"
 )
 
-var config config.Config
+var cfg *config.Config
 
 func init() {
-	config := config.Config{}
+	cfg = &config.Config{
+		Format: "2006-01-02",
+	}
 
-	config.Home = os.Getenv("TLDR_HOME")
+	cfg.Home = os.Getenv("TLDR_HOME")
 
-	if config.home == "" {
+	if cfg.Home == "" {
 		log.Fatal(fmt.Errorf("TLDR_HOME not found in environment"))
 	}
 
-	config.Archive = fmt.Sprintf("%s/archive", config.Home)
-	config.Format
+	cfg.Archive = fmt.Sprintf("%s/archive", cfg.Home)
 }
 
 func main() {
@@ -31,7 +33,7 @@ func main() {
 
 		switch cmdArg {
 		case "render":
-			cmd.Render(config, args...)
+			cmd.Render(cfg, args[1:]...)
 			break
 		default:
 			log.Fatalf("Unknown command: %s", args[0])
