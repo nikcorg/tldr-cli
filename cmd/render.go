@@ -5,6 +5,8 @@ import (
 
 	"github.com/nikcorg/tldr-cli/archive"
 	"github.com/nikcorg/tldr-cli/config"
+
+	"github.com/urfave/cli"
 )
 
 // Render is the render command
@@ -13,9 +15,15 @@ type Render struct {
 }
 
 // Configure configures the Render command
-func (cmd Render) Configure(c *config.Config) RunnableCommand {
-	return Render{
-		c,
+func (cmd Render) Configure(c *config.Config) cli.Command {
+	confd := Render{c}
+
+	return cli.Command{
+		Name:    "render",
+		Aliases: []string{"r"},
+		Action: func(ctx *cli.Context) {
+			confd.Run(ctx.Args()...)
+		},
 	}
 }
 
