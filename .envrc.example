@@ -1,1 +1,1 @@
-TLDR_HOME=/tmp
+export TLDR_HOME="/tmp"
