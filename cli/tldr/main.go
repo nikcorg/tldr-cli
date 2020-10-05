@@ -11,9 +11,12 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const (
-	buildVersion = "0.0.0"
-	buildDate    = "<never>"
+// Build variables
+var (
+	buildVersion string = "<none>"
+	buildDate    string = "<none>"
+	buildCommit  string = "<none>"
+	buildArch    string = "<none>"
 )
 
 var (

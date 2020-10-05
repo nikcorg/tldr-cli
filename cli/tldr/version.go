@@ -4,10 +4,17 @@ import "fmt"
 
 type versionCmd struct{}
 
+const versionStr = `tldr-cli
+ version : %s
+ built on: %s
+ commit  : %s
+ arch    : %s
+`
+
 func (c *versionCmd) Init() {}
 
 func (c *versionCmd) Execute(subcommand string, args ...string) error {
-	fmt.Printf("tldr-cli version %s, built on %s\n", buildVersion, buildDate)
+	fmt.Printf(versionStr, buildVersion, buildDate, buildCommit, buildArch)
 
 	return nil
 }
