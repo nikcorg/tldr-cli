@@ -11,6 +11,11 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+const (
+	buildVersion = "0.0.0"
+	buildDate    = "<never>"
+)
+
 var (
 	configFile string = ""
 	sourceDir  string = ""
@@ -24,12 +29,13 @@ var (
 
 	stor *storage.Storage
 
-	cmdAdd    = &addCmd{}
-	cmdConfig = &configCmd{}
-	cmdEdit   = &editCmd{}
-	cmdFind   = &findCmd{}
-	cmdHelp   = &helpCmd{}
-	cmdList   = &listCmd{}
+	cmdAdd     = &addCmd{}
+	cmdConfig  = &configCmd{}
+	cmdEdit    = &editCmd{}
+	cmdFind    = &findCmd{}
+	cmdHelp    = &helpCmd{}
+	cmdList    = &listCmd{}
+	cmdVersion = &versionCmd{}
 )
 
 func main() {
@@ -79,6 +85,8 @@ func runnableForCommand(firstArg string, args []string) (runnable, string, strin
 		runnableCommand = cmdHelp
 	case "list", "show":
 		runnableCommand = cmdList
+	case "version":
+		runnableCommand = cmdVersion
 	default:
 		subcommand = ""
 		runnableCommand, nextArgs = defaultRunnable(firstArg, args)
