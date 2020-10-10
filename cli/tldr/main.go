@@ -13,10 +13,10 @@ import (
 
 // Build variables
 var (
-	buildVersion string = "<none>"
-	buildDate    string = "<none>"
-	buildCommit  string = "<none>"
 	buildArch    string = "<none>"
+	buildCommit  string = "<none>"
+	buildTime    string = "<none>"
+	buildVersion string = "<none>"
 )
 
 var (

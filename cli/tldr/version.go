@@ -6,15 +6,15 @@ type versionCmd struct{}
 
 const versionStr = `tldr-cli
  version : %s
- built on: %s
  commit  : %s
  arch    : %s
+ built at: %s
 `
 
 func (c *versionCmd) Init() {}
 
 func (c *versionCmd) Execute(subcommand string, args ...string) error {
-	fmt.Printf(versionStr, buildVersion, buildDate, buildCommit, buildArch)
+	fmt.Printf(versionStr, buildVersion, buildTime, buildCommit, buildArch)
 
 	return nil
 }
