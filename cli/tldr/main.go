@@ -17,6 +17,7 @@ var (
 	buildCommit  string = "<none>"
 	buildTime    string = "<none>"
 	buildVersion string = "<none>"
+	binaryName   string = "tldr"
 )
 
 var (
