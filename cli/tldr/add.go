@@ -223,12 +223,16 @@ func (c *addCmd) amendPrevious(source *storage.Source) error {
 
 	log.Debugf("c= %+v", c)
 
-	e.Title = c.title.ValOrDefault(e.Title)
-	e.SourceURL = c.sourceURL.ValOrDefault(e.SourceURL)
-	e.Unread = c.unread.ValOrDefault(e.Unread)
+	if c.interactive.ValOrDefault(false) {
+		entry.Edit(e, &entry.EditContext{Titles: []string{e.Title}})
+	} else {
+		e.Title = c.title.ValOrDefault(e.Title)
+		e.SourceURL = c.sourceURL.ValOrDefault(e.SourceURL)
+		e.Unread = c.unread.ValOrDefault(e.Unread)
 
-	if len(c.relatedURLs) > 0 {
-		e.RelatedURLs = append(e.RelatedURLs, c.relatedURLs...)
+		if len(c.relatedURLs) > 0 {
+			e.RelatedURLs = append(e.RelatedURLs, c.relatedURLs...)
+		}
 	}
 
 	log.Debugf("after amending: %+v", e)
