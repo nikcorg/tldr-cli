@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/nikcorg/tldr-cli/utils"
 	log "github.com/sirupsen/logrus"
 )
@@ -110,5 +111,14 @@ func (f *listCmd) Execute(subcommand string, args ...string) error {
 }
 
 func (f *listCmd) Help(subcommand string, args ...string) {
-	fmt.Printf("Help for list: subcommand=%s, args=%v", subcommand, args)
+	fmt.Printf(strings.Replace(heredoc.Doc(`
+		Show previous entries
+
+		__BINARY_NAME__ show [-n <n>] [-o <n>] [-t]
+		__BINARY_NAME__ list [-n <n>] [-o <n>] [-t]
+
+		-t, --today            entries added on the current date
+		-o, --offset, --skip   skip the <n> initial entries
+		-n, --num              stop after <n> entries
+	`), "__BINARY_NAME__", binaryName, -1))
 }
