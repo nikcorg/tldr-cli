@@ -9,6 +9,10 @@ import (
 
 type helpCmd struct{}
 
+func (c *helpCmd) Verbs() []string {
+	return []string{"help"}
+}
+
 func (c *helpCmd) Init() {}
 
 func (c *helpCmd) Execute(subcommand string, args ...string) error {

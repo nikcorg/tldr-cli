@@ -33,13 +33,17 @@ var (
 
 	stor *storage.Storage
 
-	cmdAdd     = &addCmd{}
-	cmdConfig  = &configCmd{}
-	cmdEdit    = &editCmd{}
-	cmdFind    = &findCmd{}
-	cmdHelp    = &helpCmd{}
-	cmdList    = &listCmd{}
-	cmdVersion = &versionCmd{}
+	cmdAdd   = &addCmd{}
+	cmdHelp  = &helpCmd{}
+	commands = []runnable{
+		cmdAdd,
+		cmdHelp,
+		&configCmd{},
+		&editCmd{},
+		&findCmd{},
+		&listCmd{},
+		&versionCmd{},
+	}
 )
 
 func main() {
@@ -73,25 +77,15 @@ func runnableForCommand(firstArg string, args []string) (runnable, string, strin
 
 	command, subcommand := splitCommand(firstArg)
 
-	switch command {
-	case "add":
-		runnableCommand = cmdAdd
-	case "amend":
-		runnableCommand = cmdAdd
-		subcommand = "amend"
-	case "config":
-		runnableCommand = cmdConfig
-	case "edit":
-		runnableCommand = cmdEdit
-	case "find":
-		runnableCommand = cmdFind
-	case "help":
-		runnableCommand = cmdHelp
-	case "list", "show":
-		runnableCommand = cmdList
-	case "version":
-		runnableCommand = cmdVersion
-	default:
+	for _, c := range commands {
+		for _, v := range c.Verbs() {
+			if v == firstArg {
+				runnableCommand = c
+			}
+		}
+	}
+
+	if runnableCommand == nil {
 		subcommand = ""
 		runnableCommand, nextArgs = defaultRunnable(firstArg, args)
 	}

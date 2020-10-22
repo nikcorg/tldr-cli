@@ -18,6 +18,10 @@ type configCmd struct {
 	forced bool
 }
 
+func (c *configCmd) Verbs() []string {
+	return []string{"config"}
+}
+
 func (c *configCmd) Init() {
 	c.forced = false
 }

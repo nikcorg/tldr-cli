@@ -10,6 +10,10 @@ import (
 
 type syncCmd struct{}
 
+func (s *syncCmd) Verbs() []string {
+	return []string{"sync"}
+}
+
 func (s *syncCmd) ParseArgs(subcommand string, args ...string) error {
 	return nil
 }

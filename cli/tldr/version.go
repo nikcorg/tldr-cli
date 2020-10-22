@@ -16,6 +16,10 @@ const versionStr = `tldr-cli
  built at: %s
 `
 
+func (c *versionCmd) Verbs() []string {
+	return []string{"version"}
+}
+
 func (c *versionCmd) Init() {}
 
 func (c *versionCmd) Execute(subcommand string, args ...string) error {

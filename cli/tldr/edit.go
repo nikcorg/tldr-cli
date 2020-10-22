@@ -23,6 +23,10 @@ var (
 
 type editCmd struct{}
 
+func (e *editCmd) Verbs() []string {
+	return []string{"edit"}
+}
+
 func (e *editCmd) Init() {}
 
 func (e *editCmd) ParseArgs(subcommand string, args ...string) error {
