@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/nikcorg/tldr-cli/storage"
 
 	log "github.com/sirupsen/logrus"
@@ -113,7 +114,19 @@ func (c *findCmd) Execute(subcommand string, args ...string) error {
 }
 
 func (c *findCmd) Help(subcommand string, args ...string) {
-	log.Debugf("Help for %s, %v", subcommand, args)
+	fmt.Printf(strings.Replace(heredoc.Doc(`
+		Find an existing entry
+
+		__BINARY_NAME__ find <search term>
+		__BINARY_NAME__ find:all <search term>
+
+		Return all entries matching the search term
+
+		__BINARY_NAME__ find:one <search term>
+		__BINARY_NAME__ find:first <search term>
+
+		Return only the first match.
+	`), "__BINARY_NAME__", binaryName, -1))
 }
 
 type searchResult struct {
