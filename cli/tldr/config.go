@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/nikcorg/tldr-cli/config/rotation"
 	"github.com/nikcorg/tldr-cli/config/sync"
 	log "github.com/sirupsen/logrus"
@@ -70,7 +71,16 @@ func (c *configCmd) Execute(subcommand string, args ...string) error {
 }
 
 func (c *configCmd) Help(subcommand string, args ...string) {
-	log.Debugf("Help for %s, %v", subcommand, args)
+	fmt.Printf(strings.Replace(heredoc.Doc(`
+		Initialise, show or alter configuration
+
+		__BINARY_NAME__ config:get <key>
+		__BINARY_NAME__ config:set <key> <value>
+		__BINARY_NAME__ config:show
+		__BINARY_NAME__ config:init [-f]
+
+		-f, --force		force (only useful for resetting the config)
+	`), "__BINARY_NAME__", binaryName, -1))
 }
 
 func (c *configCmd) set(key, value string) (bool, error) {
