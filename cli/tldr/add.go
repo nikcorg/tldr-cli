@@ -10,6 +10,8 @@ import (
 	"github.com/nikcorg/tldr-cli/touchable"
 	"github.com/nikcorg/tldr-cli/utils"
 
+	"github.com/MakeNowJust/heredoc"
+
 	log "github.com/sirupsen/logrus"
 )
 
@@ -75,7 +77,23 @@ func (c *addCmd) Init() {
 }
 
 func (c *addCmd) Help(subcommand string, args ...string) {
-	log.Debugf("Help for %s, %v", subcommand, args)
+	fmt.Printf(strings.Replace(heredoc.Doc(`
+		Add a new url to the log or amend the previous added entry
+
+		__BINARY_NAME__ add <url> [-i] [-x] [-s <url>] [-r <url>]
+		__BINARY_NAME__ amend [-i] [-x] [-s <url>] [-r <url>]
+
+		-i, --interactive   interactive mode
+		-x, --read          mark as read
+		-s, --source        source url
+		-r, --related       related url, can be supplied multiple times
+
+		Amend also provides a focused exlusively non-interactive form
+
+		__BINARY_NAME__ amend:related <url>
+		__BINARY_NAME__ amend:source <url>
+		__BINARY_NAME__ amend:title <title>
+	`), "__BINARY_NAME__", binaryName, -1))
 }
 
 func (c *addCmd) ParseArgs(subcommand string, args ...string) error {
@@ -223,12 +241,16 @@ func (c *addCmd) amendPrevious(source *storage.Source) error {
 
 	log.Debugf("c= %+v", c)
 
-	e.Title = c.title.ValOrDefault(e.Title)
-	e.SourceURL = c.sourceURL.ValOrDefault(e.SourceURL)
-	e.Unread = c.unread.ValOrDefault(e.Unread)
+	if c.interactive.ValOrDefault(false) {
+		entry.Edit(e, &entry.EditContext{Titles: []string{e.Title}})
+	} else {
+		e.Title = c.title.ValOrDefault(e.Title)
+		e.SourceURL = c.sourceURL.ValOrDefault(e.SourceURL)
+		e.Unread = c.unread.ValOrDefault(e.Unread)
 
-	if len(c.relatedURLs) > 0 {
-		e.RelatedURLs = append(e.RelatedURLs, c.relatedURLs...)
+		if len(c.relatedURLs) > 0 {
+			e.RelatedURLs = append(e.RelatedURLs, c.relatedURLs...)
+		}
 	}
 
 	log.Debugf("after amending: %+v", e)

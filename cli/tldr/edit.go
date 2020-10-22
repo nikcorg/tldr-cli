@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/nikcorg/tldr-cli/input/entry"
 	"github.com/nikcorg/tldr-cli/storage"
 
@@ -61,7 +62,17 @@ func (e *editCmd) Execute(subcommand string, args ...string) error {
 }
 
 func (e *editCmd) Help(subcommand string, args ...string) {
-	log.Debugf("Help for %s, %v", subcommand, args)
+	fmt.Printf(strings.Replace(heredoc.Doc(`
+		Edit the previous ar an arbitrary existing entry
+
+		__BINARY_NAME__ edit [<search term>]
+
+		When no search term is passed, the most recent entry is assumed.
+		When several entries match the search term, an interactive multiple
+		choice menu is provided.
+
+		The edit command is always interactive.
+	`), "__BINARY_NAME__", binaryName, -1))
 }
 
 func matchEntry(source *storage.Source, needle string) (*storage.Entry, error) {

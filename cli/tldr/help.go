@@ -13,7 +13,6 @@ func (c *helpCmd) Init() {}
 
 func (c *helpCmd) Execute(subcommand string, args ...string) error {
 	log.Debugf("help:%s, args=%v", subcommand, strings.Join(args, "|"))
-	flag.PrintDefaults()
 
 	if len(args) > 0 && args[0] != "" {
 		firstArg := args[0]
@@ -22,6 +21,8 @@ func (c *helpCmd) Execute(subcommand string, args ...string) error {
 		log.Debugf("focused help: %s:%s", helpFocus, helpFocusSubcommand)
 
 		runnableCommand.Help(helpFocusSubcommand, restArgs...)
+	} else {
+		flag.PrintDefaults()
 	}
 
 	return nil

@@ -44,16 +44,16 @@ func NewWithDefaults() *Settings {
 
 // Load reads and unserialises the runtime config from disk
 func (s *Settings) Load(configFile string) error {
-	fullPath := defaultConfigFilename(configFile, path.Join(configDir, configFileName))
+	s.ConfigPath = defaultConfigFilename(configFile, path.Join(configDir, configFileName))
 
-	bytes, err := ioutil.ReadFile(fullPath)
+	bytes, err := ioutil.ReadFile(s.ConfigPath)
 	if os.IsNotExist(err) {
 		return ErrConfigFileNotFound
 	} else if err != nil {
 		return err
 	}
 
-	log.Debugf("Loaded %d bytes of config from %s", len(bytes), fullPath)
+	log.Debugf("Loaded %d bytes of config from %s", len(bytes), s.ConfigPath)
 	if len(bytes) == 0 {
 		return nil
 	}

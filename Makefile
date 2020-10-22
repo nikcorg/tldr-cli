@@ -11,7 +11,7 @@ os = $(word 1, $@)
 
 build:
 	go build \
-		-ldflags "-X \"main.buildTime=$(BUILD_TIME)\" -X \"main.buildVersion=$(BUILD_VERSION)\" -X main.buildCommit=$(BUILD_COMMIT) -X \"main.buildArch=$(BUILD_ARCH)/amd64\"" \
+		-ldflags "-X \"main.binaryName=${BINARY_NAME}\" \"main.buildTime=$(BUILD_TIME)\" -X \"main.buildVersion=$(BUILD_VERSION)\" -X main.buildCommit=$(BUILD_COMMIT) -X \"main.buildArch=$(BUILD_ARCH)/amd64\"" \
 		-o bin/$(BINARY_NAME) cli/tldr/*.go
 
 clean:
@@ -23,7 +23,7 @@ run:
 .PHONY: $(PLATFORMS)
 $(PLATFORMS):
 	GOOS=$(os) GOARCH=amd64 go build \
-		-ldflags "-X \"main.buildTime=$(BUILD_TIME)\" -X \"main.buildVersion=$(BUILD_VERSION)\" -X \"main.buildCommit=$(BUILD_COMMIT)\" -X \"main.buildArch=$(os)/amd64\"" \
+		-ldflags "-X \"main.binaryName=${BINARY_NAME}\" -X \"main.buildTime=$(BUILD_TIME)\" -X \"main.buildVersion=$(BUILD_VERSION)\" -X \"main.buildCommit=$(BUILD_COMMIT)\" -X \"main.buildArch=$(os)/amd64\"" \
 		-o bin/$(BINARY_NAME)-$(VERSION)-$(os)-amd64 cli/tldr/*.go
 
 .PHONY: release
