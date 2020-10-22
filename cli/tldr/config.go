@@ -49,6 +49,9 @@ func (c *configCmd) Execute(subcommand string, args ...string) error {
 	var err error
 
 	switch subcommand {
+	case "show":
+		fmt.Println(runtimeConfig.ConfigPath)
+
 	case "set":
 		changed, err = c.set(args[0], args[1])
 
