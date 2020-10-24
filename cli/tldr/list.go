@@ -22,6 +22,10 @@ type listCmd struct {
 	newerThan *time.Time
 }
 
+func (f *listCmd) Verbs() []string {
+	return []string{"list", "show"}
+}
+
 func (f *listCmd) Init() {
 	// FIXME: default page size should be in config
 	f.num = -1

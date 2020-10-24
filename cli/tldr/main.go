@@ -13,33 +13,37 @@ import (
 
 // Build variables
 var (
-	buildArch    string = "<none>"
-	buildCommit  string = "<none>"
-	buildTime    string = "<none>"
-	buildVersion string = "<none>"
-	binaryName   string = "tldr"
+	buildArch    = "<none>"
+	buildCommit  = "<none>"
+	buildTime    = "<none>"
+	buildVersion = "<none>"
+	binaryName   = "tldr"
 )
 
 var (
-	configFile string = ""
-	sourceDir  string = ""
-	sourceFile string = ""
+	configFile = ""
+	sourceDir  = ""
+	sourceFile = ""
 
-	debugLogging   bool = false
-	verboseLogging bool = false
+	debugLogging   = false
+	verboseLogging = false
 
-	configWasLoadedFromDisk bool = false
+	configWasLoadedFromDisk = false
 	runtimeConfig           *config.Settings
 
 	stor *storage.Storage
 
-	cmdAdd     = &addCmd{}
-	cmdConfig  = &configCmd{}
-	cmdEdit    = &editCmd{}
-	cmdFind    = &findCmd{}
-	cmdHelp    = &helpCmd{}
-	cmdList    = &listCmd{}
-	cmdVersion = &versionCmd{}
+	cmdAdd   = &addCmd{}
+	cmdHelp  = &helpCmd{}
+	commands = []runnable{
+		cmdAdd,
+		cmdHelp,
+		&configCmd{},
+		&editCmd{},
+		&findCmd{},
+		&listCmd{},
+		&versionCmd{},
+	}
 )
 
 func main() {
@@ -68,30 +72,20 @@ func splitCommand(cmd string) (string, string) {
 func runnableForCommand(firstArg string, args []string) (runnable, string, string, []string) {
 	var (
 		runnableCommand runnable
-		nextArgs        []string = args
+		nextArgs        = args
 	)
 
 	command, subcommand := splitCommand(firstArg)
 
-	switch command {
-	case "add":
-		runnableCommand = cmdAdd
-	case "amend":
-		runnableCommand = cmdAdd
-		subcommand = "amend"
-	case "config":
-		runnableCommand = cmdConfig
-	case "edit":
-		runnableCommand = cmdEdit
-	case "find":
-		runnableCommand = cmdFind
-	case "help":
-		runnableCommand = cmdHelp
-	case "list", "show":
-		runnableCommand = cmdList
-	case "version":
-		runnableCommand = cmdVersion
-	default:
+	for _, c := range commands {
+		for _, v := range c.Verbs() {
+			if v == firstArg {
+				runnableCommand = c
+			}
+		}
+	}
+
+	if runnableCommand == nil {
 		subcommand = ""
 		runnableCommand, nextArgs = defaultRunnable(firstArg, args)
 	}
@@ -117,8 +111,8 @@ func mainWithErr(args ...string) error {
 
 	log.Debugf("Runtime config after Load (from disk? %v) %+v", configWasLoadedFromDisk, runtimeConfig)
 
-	var firstArg string = ""
-	var restArgs []string = []string{}
+	firstArg := ""
+	restArgs := []string{}
 
 	if len(args) > 0 {
 		firstArg = args[0]

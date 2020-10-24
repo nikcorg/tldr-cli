@@ -28,6 +28,10 @@ type addCmd struct {
 	unread      *touchable.Bool
 }
 
+func (c *addCmd) Verbs() []string {
+	return []string{"add", "amend"}
+}
+
 func (c *addCmd) Execute(subcommand string, args ...string) error {
 	log.Debugf("add:%s, args=%v", subcommand, args)
 

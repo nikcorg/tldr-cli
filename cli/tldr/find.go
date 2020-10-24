@@ -33,6 +33,10 @@ var (
 	errMissingNeedle       = fmt.Errorf("no search term found")
 )
 
+func (c *findCmd) Verbs() []string {
+	return []string{"find"}
+}
+
 func (c *findCmd) Init() {
 	c.filters = []findFilter{}
 	c.needle = ""
