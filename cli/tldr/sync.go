@@ -10,6 +10,8 @@ import (
 
 type syncCmd struct{}
 
+func (s *syncCmd) Init() {}
+
 func (s *syncCmd) Verbs() []string {
 	return []string{"sync"}
 }
