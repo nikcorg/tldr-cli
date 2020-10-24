@@ -22,7 +22,7 @@ func (s *syncCmd) Help(subcommand string, args ...string) {}
 
 func (s *syncCmd) Execute(subcommand string, args ...string) error {
 	if runtimeConfig.Sync.Exec == "" && runtimeConfig.Sync.Remote != "" {
-		return fmt.Errorf("Git sync not implemented")
+		return fmt.Errorf("Git sync not yet implemented")
 	}
 
 	if runtimeConfig.Rotation == rotation.None {
@@ -44,5 +44,5 @@ func (s *syncCmd) simpleSync() error {
 }
 
 func (s *syncCmd) multiSync() error {
-	return nil
+	return fmt.Errorf("Sync with storage rotation not yet implemented")
 }
