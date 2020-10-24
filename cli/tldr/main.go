@@ -13,22 +13,22 @@ import (
 
 // Build variables
 var (
-	buildArch    string = "<none>"
-	buildCommit  string = "<none>"
-	buildTime    string = "<none>"
-	buildVersion string = "<none>"
-	binaryName   string = "tldr"
+	buildArch    = "<none>"
+	buildCommit  = "<none>"
+	buildTime    = "<none>"
+	buildVersion = "<none>"
+	binaryName   = "tldr"
 )
 
 var (
-	configFile string = ""
-	sourceDir  string = ""
-	sourceFile string = ""
+	configFile = ""
+	sourceDir  = ""
+	sourceFile = ""
 
-	debugLogging   bool = false
-	verboseLogging bool = false
+	debugLogging   = false
+	verboseLogging = false
 
-	configWasLoadedFromDisk bool = false
+	configWasLoadedFromDisk = false
 	runtimeConfig           *config.Settings
 
 	stor *storage.Storage
@@ -72,7 +72,7 @@ func splitCommand(cmd string) (string, string) {
 func runnableForCommand(firstArg string, args []string) (runnable, string, string, []string) {
 	var (
 		runnableCommand runnable
-		nextArgs        []string = args
+		nextArgs        = args
 	)
 
 	command, subcommand := splitCommand(firstArg)
@@ -111,8 +111,8 @@ func mainWithErr(args ...string) error {
 
 	log.Debugf("Runtime config after Load (from disk? %v) %+v", configWasLoadedFromDisk, runtimeConfig)
 
-	var firstArg string = ""
-	var restArgs []string = []string{}
+	firstArg := ""
+	restArgs := []string{}
 
 	if len(args) > 0 {
 		firstArg = args[0]
