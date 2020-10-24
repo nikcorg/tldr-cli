@@ -46,5 +46,5 @@ func (s *syncCmd) simpleSync() error {
 }
 
 func (s *syncCmd) multiSync() error {
-	return nil
+	return fmt.Errorf("Sync with storage rotation not yet implemented")
 }
