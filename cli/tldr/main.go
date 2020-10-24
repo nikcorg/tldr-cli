@@ -79,8 +79,9 @@ func runnableForCommand(firstArg string, args []string) (runnable, string, strin
 
 	for _, c := range commands {
 		for _, v := range c.Verbs() {
-			if v == firstArg {
+			if v == command {
 				runnableCommand = c
+				break
 			}
 		}
 	}
@@ -116,17 +117,18 @@ func mainWithErr(args ...string) error {
 
 	if len(args) > 0 {
 		firstArg = args[0]
+		restArgs = args[1:]
 	}
 
-	runnableCommand, command, subcommand, restArgs := runnableForCommand(firstArg, args[1:])
+	runnableCommand, command, subcommand, cmdArgs := runnableForCommand(firstArg, restArgs)
 
 	runnableCommand.Init()
 
-	if err = runnableCommand.ParseArgs(subcommand, restArgs...); err != nil {
+	if err = runnableCommand.ParseArgs(subcommand, cmdArgs...); err != nil {
 		return fmt.Errorf("%w: %s", errInvalidArg, err)
 	}
 
-	if err = runnableCommand.Execute(subcommand, restArgs...); err != nil {
+	if err = runnableCommand.Execute(subcommand, cmdArgs...); err != nil {
 		if subcommand != "" {
 			return fmt.Errorf("Error running %s:%s: %w", command, subcommand, err)
 
