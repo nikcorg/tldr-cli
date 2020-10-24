@@ -34,7 +34,7 @@ var (
 )
 
 func (c *findCmd) Verbs() []string {
-	return []string{"edit"}
+	return []string{"find"}
 }
 
 func (c *findCmd) Init() {
