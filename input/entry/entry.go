@@ -100,12 +100,12 @@ func edit(newEntry *storage.Entry, ctx *EditContext, mode string) error {
 		case sourceURL:
 			fmt.Printf("Enter source: ")
 			selection, _ = reader.ReadString('\n')
-			newEntry.SourceURL = strings.ToLower(strings.TrimSpace(selection))
+			newEntry.SourceURL = strings.TrimSpace(selection)
 
 		case relatedURL:
 			fmt.Printf("Enter related: ")
 			selection, _ = reader.ReadString('\n')
-			newEntry.RelatedURLs = append(newEntry.RelatedURLs, strings.ToLower(strings.TrimSpace(selection)))
+			newEntry.RelatedURLs = append(newEntry.RelatedURLs, strings.TrimSpace(selection))
 
 		case quit:
 			fmt.Println("Ok, quitting without saving.")

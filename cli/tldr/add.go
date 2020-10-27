@@ -180,7 +180,7 @@ func (c *addCmd) addEntry(source *storage.Source) error {
 	}
 
 	var newEntry = &storage.Entry{
-		URL:         strings.ToLower(res.URL),
+		URL:         res.URL,
 		Title:       c.title.Val(),
 		Unread:      c.unread.ValOrDefault(true),
 		RelatedURLs: c.relatedURLs,
