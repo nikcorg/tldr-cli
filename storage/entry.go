@@ -15,7 +15,7 @@ type Entry struct {
 }
 
 // Contains returns `irue` if any string fields contains `needle`
-func (e Entry) Contains(needle string) bool {
+func (e *Entry) Contains(needle string) bool {
 	if strings.Contains(strings.ToLower(e.Title), needle) || strings.Contains(e.URL, needle) || strings.Contains(e.SourceURL, needle) {
 		return true
 	}
