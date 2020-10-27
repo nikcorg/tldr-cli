@@ -2,7 +2,6 @@ package storage
 
 import (
 	"errors"
-	"reflect"
 	"time"
 )
 
@@ -36,7 +35,7 @@ func (s *Source) FirstRecord() *Record {
 func (s *Source) RemoveEntry(e *Entry) error {
 	for _, r := range s.Records {
 		for i, re := range r.Entries {
-			if reflect.DeepEqual(re, e) {
+			if re.URL == e.URL {
 				r.Entries = append(r.Entries[:i], r.Entries[(i+1):]...)
 				return nil
 			}
