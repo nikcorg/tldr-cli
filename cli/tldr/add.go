@@ -41,9 +41,6 @@ func (c *addCmd) Execute(subcommand string, args ...string) error {
 	}
 
 	switch subcommand {
-	case "amend":
-		err = c.amendPrevious(source)
-
 	case "title":
 		err = amendTitle(source, c.url.Val())
 
@@ -85,14 +82,13 @@ func (c *addCmd) Help(subcommand string, args ...string) {
 		Add a new url to the log or amend the previous added entry
 
 		__BINARY_NAME__ add <url> [-i] [-x] [-s <url>] [-r <url>]
-		__BINARY_NAME__ amend [-i] [-x] [-s <url>] [-r <url>]
 
 		-i, --interactive   interactive mode
 		-x, --read          mark as read
 		-s, --source        source url
 		-r, --related       related url, can be supplied multiple times
 
-		Amend also provides a focused exlusively non-interactive form
+		Add (as amend) also provides a non-interactive form of amending the previous entry
 
 		__BINARY_NAME__ amend:related <url>
 		__BINARY_NAME__ amend:source <url>
@@ -237,29 +233,6 @@ func addEntryToTLDR(newEntry *storage.Entry, source *storage.Source) {
 		}, source.Records...)
 		source.Records = newRecords
 	}
-}
-
-func (c *addCmd) amendPrevious(source *storage.Source) error {
-	r := source.Records[0]
-	e := &r.Entries[len(r.Entries)-1]
-
-	log.Debugf("c= %+v", c)
-
-	if c.interactive.ValOrDefault(false) {
-		entry.Edit(e, &entry.EditContext{Titles: []string{e.Title}})
-	} else {
-		e.Title = c.title.ValOrDefault(e.Title)
-		e.SourceURL = c.sourceURL.ValOrDefault(e.SourceURL)
-		e.Unread = c.unread.ValOrDefault(e.Unread)
-
-		if len(c.relatedURLs) > 0 {
-			e.RelatedURLs = append(e.RelatedURLs, c.relatedURLs...)
-		}
-	}
-
-	log.Debugf("after amending: %+v", e)
-
-	return nil
 }
 
 ///
