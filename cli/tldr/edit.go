@@ -56,7 +56,14 @@ func (e *editCmd) Execute(subcommand string, args ...string) error {
 		return err
 	}
 
-	log.Debugf("before save, %+v", source.FirstRecord())
+	if matchedEntry.Deleted() {
+		log.Debugf("entry was deleted")
+		if err := source.RemoveEntry(matchedEntry); err != nil {
+			return err
+		}
+	} else {
+		log.Debugf("entry was not deleted")
+	}
 
 	if err := stor.Save(source); err != nil {
 		return err
