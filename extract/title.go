@@ -47,13 +47,8 @@ func getTitleCandidates(res *html.Node) ([]string, error) {
 			titleText, err := sel.Extractor(titleNode)
 
 			if err != nil {
-				switch err {
-				case errNoTextNodes:
-					continue
-				default:
-					log.Debugf("Error extracting title using %s: %s", sel.Name, err.Error())
-					return nil, fmt.Errorf("Error extracting title: %w", err)
-				}
+				log.Debugf("Error extracting title using %s: %s", sel.Name, err.Error())
+				continue
 			}
 
 			trimmedTitle := strings.TrimSpace(titleText)
