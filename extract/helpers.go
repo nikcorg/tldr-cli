@@ -2,6 +2,7 @@ package extract
 
 import (
 	"fmt"
+	"strings"
 
 	"golang.org/x/net/html"
 )
@@ -18,11 +19,37 @@ func attrValueFor(name string) func(n *html.Node) (string, error) {
 }
 
 func textContentFor(n *html.Node) (string, error) {
-	for currentNode := n; currentNode != nil; currentNode = currentNode.FirstChild {
-		if currentNode.Type == html.TextNode {
-			return currentNode.Data, nil
+	var fragments []string
+
+	for currentNode := n.FirstChild; currentNode != nil; currentNode = currentNode.NextSibling {
+		switch currentNode.Type {
+		case html.ElementNode:
+			if sub, err := textContentFor(currentNode); err != nil {
+				return "", err
+			} else {
+				fragments = append(fragments, sub)
+			}
+
+		case html.TextNode:
+			fragments = append(fragments, strings.TrimSpace(currentNode.Data))
 		}
 	}
 
-	return "", errNoTextNodes
+	if fragments == nil || len(fragments) == 0 {
+		return "", errNoTextNodes
+	}
+
+	return strings.Join(compact(fragments), " "), nil
+}
+
+func compact(xs []string) []string {
+	nxs := []string{}
+
+	for _, x := range xs {
+		if len(x) > 0 {
+			nxs = append(nxs, x)
+		}
+	}
+
+	return nxs
 }
