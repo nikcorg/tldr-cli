@@ -13,6 +13,10 @@ import (
 var selectors []titlePuller = []titlePuller{
 	{"og:title", cascadia.MustCompile("meta[property=\"og:title\"]"), attrValueFor("content")},
 	{"twitter:title", cascadia.MustCompile("meta[property=\"twitter:title\"]"), attrValueFor("content")},
+	// also handle the incorrect [meta name=""] tags, as they seem fairly prevalent
+	{"og:title", cascadia.MustCompile("meta[name=\"og:title\"]"), attrValueFor("content")},
+	{"twitter:title", cascadia.MustCompile("meta[name=\"twitter:title\"]"), attrValueFor("content")},
+	// -----
 	{"title", cascadia.MustCompile("title"), textContentFor},
 	{"h1", cascadia.MustCompile("h1"), textContentFor},
 	{"h2", cascadia.MustCompile("h2"), textContentFor},
