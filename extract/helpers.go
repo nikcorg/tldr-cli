@@ -13,7 +13,7 @@ func attrValueFor(name string) func(n *html.Node) (string, error) {
 				return attr.Val, nil
 			}
 		}
-		return "", fmt.Errorf("Missing value attribute")
+		return "", fmt.Errorf("Missing value attribute: %s", name)
 	}
 }
 
