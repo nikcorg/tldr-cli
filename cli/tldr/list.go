@@ -27,8 +27,7 @@ func (f *listCmd) Verbs() []string {
 }
 
 func (f *listCmd) Init() {
-	// FIXME: default page size should be in config
-	f.num = -1
+	f.num = runtimeConfig.List.PageSize
 	f.offset = 0
 }
 

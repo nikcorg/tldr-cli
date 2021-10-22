@@ -16,6 +16,7 @@ type Configuration struct {
 	Rotation rotation.Period `yaml:"rotation"`
 	Storage  StorageConfig   `yaml:"storage"`
 	Sync     SyncConfig      `yaml:"sync"`
+	List     ListConfig      `yaml:"list"`
 }
 
 // StorageConfig represents storage settings
@@ -29,4 +30,9 @@ type SyncConfig struct {
 	Mode   sync.Mode `yaml:"mode"`
 	Exec   string    `yaml:"exec,omitempty"`
 	Remote string    `yaml:"remote,omitempty"`
+}
+
+// ListConfig represents listing settings
+type ListConfig struct {
+	PageSize int `yaml:"page_size"`
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/MakeNowJust/heredoc"
@@ -113,6 +114,16 @@ func (c *configCmd) set(key, value string) (bool, error) {
 			return true, nil
 		}
 
+	case "show.page_size":
+		if fmt.Sprintf("%d", runtimeConfig.List.PageSize) != value {
+			intval, err := strconv.Atoi(value)
+			if err != nil {
+				return false, err
+			}
+			runtimeConfig.List.PageSize = intval
+			return true, nil
+		}
+
 	default:
 		return false, fmt.Errorf("%w: %s", errUnknownSetting, key)
 	}
@@ -143,6 +154,13 @@ func (c *configCmd) get(key string) error {
 			fmt.Println("sync.mode is unset")
 		} else {
 			fmt.Printf("sync.mode=%s\n", runtimeConfig.Sync.Mode)
+		}
+
+	case "list.page_size", "show.page_size":
+		if runtimeConfig.List.PageSize == 0 {
+			fmt.Println("list.page_size is unset")
+		} else {
+			fmt.Printf("list.page_size=%d\n", runtimeConfig.List.PageSize)
 		}
 
 	default:

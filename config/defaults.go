@@ -15,6 +15,9 @@ func withDefaults(config *Settings) *Settings {
 				Name: defaultStorageName(config.Configuration.Storage.Name),
 				Path: defaultStoragePath(config.Configuration.Storage.Path),
 			},
+			List: ListConfig{
+				PageSize: 10,
+			},
 		},
 	}
 }
