@@ -78,7 +78,7 @@ func (c *addCmd) Init() {
 }
 
 func (c *addCmd) Help(subcommand string, args ...string) {
-	fmt.Printf(strings.Replace(heredoc.Doc(`
+	fmt.Print(strings.Replace(heredoc.Doc(`
 		Add a new url to the log or amend the previous added entry
 
 		__BINARY_NAME__ add <url> [-i] [-x] [-s <url>] [-r <url>]
@@ -167,7 +167,7 @@ func (c *addCmd) addEntry(source *storage.Source) error {
 	var res *fetch.Details
 	var err error
 	if res, err = fetch.Preview(c.url.Val()); err != nil {
-		return fmt.Errorf("Error fetching (%s): %w", c.url.Val(), err)
+		return fmt.Errorf("error fetching (%s): %w", c.url.Val(), err)
 	}
 	log.Debugf("Fetch result: %+v", res)
 

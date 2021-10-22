@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	errInvalidArg        = fmt.Errorf("Invalid argument")
-	errExpectedNumberArg = fmt.Errorf("Expected numeric argument")
+	errInvalidArg        = fmt.Errorf("invalid argument")
+	errExpectedNumberArg = fmt.Errorf("expected numeric argument")
 )
 
 type listCmd struct {
@@ -115,7 +115,7 @@ func (f *listCmd) Execute(subcommand string, args ...string) error {
 }
 
 func (f *listCmd) Help(subcommand string, args ...string) {
-	fmt.Printf(strings.Replace(heredoc.Doc(`
+	fmt.Print(strings.Replace(heredoc.Doc(`
 		Show previous entries
 
 		__BINARY_NAME__ show [-n <n>] [-o <n>] [-t]

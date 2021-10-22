@@ -34,7 +34,7 @@ func (c *versionCmd) ParseArgs(subcommand string, args ...string) error {
 
 func (c *versionCmd) Help(subcommand string, args ...string) {
 
-	fmt.Printf(strings.Replace(heredoc.Doc(`
+	fmt.Print(strings.Replace(heredoc.Doc(`
 		Show the version number and various build time details
 
 		__BINARY_NAME__ version

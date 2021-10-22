@@ -73,7 +73,7 @@ func (e *editCmd) Execute(subcommand string, args ...string) error {
 }
 
 func (e *editCmd) Help(subcommand string, args ...string) {
-	fmt.Printf(strings.Replace(heredoc.Doc(`
+	fmt.Print(strings.Replace(heredoc.Doc(`
 		Edit the previous ar an arbitrary existing entry
 
 		__BINARY_NAME__ edit [<search term>]
@@ -128,7 +128,7 @@ func selectEntry(results []searchResult) (*storage.Entry, error) {
 
 	reader := bufio.NewReader(os.Stdin)
 
-	for true {
+	for {
 		for n, r := range results {
 			e := r.Entry
 			fmt.Printf("%d) %s (%v)\n", n, e.Title, r.Record.Date)
@@ -164,6 +164,4 @@ func selectEntry(results []searchResult) (*storage.Entry, error) {
 			}
 		}
 	}
-
-	return nil, nil
 }

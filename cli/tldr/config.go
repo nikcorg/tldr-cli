@@ -75,7 +75,7 @@ func (c *configCmd) Execute(subcommand string, args ...string) error {
 }
 
 func (c *configCmd) Help(subcommand string, args ...string) {
-	fmt.Printf(strings.Replace(heredoc.Doc(`
+	fmt.Print(strings.Replace(heredoc.Doc(`
 		Initialise, show or alter configuration
 
 		__BINARY_NAME__ config:get <key>
