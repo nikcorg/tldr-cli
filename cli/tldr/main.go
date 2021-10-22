@@ -117,6 +117,9 @@ func mainWithErr(args ...string) error {
 
 	if len(args) > 0 {
 		firstArg = args[0]
+	}
+
+	if len(args) > 1 {
 		restArgs = args[1:]
 	}
 
