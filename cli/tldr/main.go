@@ -43,6 +43,7 @@ var (
 		&findCmd{},
 		&listCmd{},
 		&versionCmd{},
+		&syncCmd{},
 	}
 )
 
