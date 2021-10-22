@@ -24,7 +24,7 @@ run:
 $(PLATFORMS):
 	GOOS=$(os) GOARCH=amd64 go build \
 		-ldflags "-X \"main.binaryName=${BINARY_NAME}\" -X \"main.buildTime=$(BUILD_TIME)\" -X \"main.buildVersion=$(BUILD_VERSION)\" -X \"main.buildCommit=$(BUILD_COMMIT)\" -X \"main.buildArch=$(os)/amd64\"" \
-		-o bin/$(BINARY_NAME)-$(VERSION)-$(os)-amd64 cli/tldr/*.go
+		-o bin/$(BINARY_NAME)-$(BUILD_VERSION)-$(os)-amd64 cli/tldr/*.go
 
 .PHONY: release
 release: windows linux darwin
