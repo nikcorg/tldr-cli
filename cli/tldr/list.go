@@ -87,6 +87,8 @@ func (f *listCmd) Execute(subcommand string, args ...string) error {
 
 	displayed := 0
 	skipped := 0
+	to_skip := f.num * f.offset
+
 	for _, d := range source.Records {
 		if f.newerThan != nil && !d.Date.Equal(*f.newerThan) && !d.Date.After(*f.newerThan) {
 			log.Debugf("%v < %v", d.Date, f.newerThan)
@@ -95,7 +97,7 @@ func (f *listCmd) Execute(subcommand string, args ...string) error {
 
 		for i := len(d.Entries) - 1; i >= 0 && (f.num < 0 || displayed < f.num); i-- {
 			e := d.Entries[i]
-			if skipped < f.offset {
+			if skipped < to_skip {
 				skipped++
 				continue
 			}
@@ -121,7 +123,7 @@ func (f *listCmd) Help(subcommand string, args ...string) {
 		__BINARY_NAME__ list [-n <n>] [-o <n>] [-t]
 
 		-t, --today            entries added on the current date
-		-o, --offset, --skip   skip the <n> initial entries
-		-n, --num              stop after <n> entries
+		-o, --offset, --skip   skip <n> pages
+		-n, --num              show <n> items per page
 	`), "__BINARY_NAME__", binaryName, -1))
 }
