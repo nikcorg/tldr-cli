@@ -23,7 +23,7 @@ func (c *versionCmd) Verbs() []string {
 func (c *versionCmd) Init() {}
 
 func (c *versionCmd) Execute(subcommand string, args ...string) error {
-	fmt.Printf(versionStr, buildVersion, buildTime, buildCommit, buildArch)
+	fmt.Printf(versionStr, buildVersion, buildCommit, buildArch, buildTime)
 
 	return nil
 }
