@@ -74,8 +74,8 @@ func getTitleCandidates(res *html.Node) ([]string, error) {
 
 const (
 	exactMatch        = 3
-	includedByAnother = 2
-	includesAnother   = 1 // this is most likely a site name suffixed title
+	includesAnother   = 2 // this is most likely a site name suffixed/prefix title
+	includedByAnother = 1 // this is probably the site name
 )
 
 func rankTitleCandidates(titles []string) ([]string, error) {
