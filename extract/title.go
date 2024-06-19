@@ -1,13 +1,17 @@
 package extract
 
 import (
-	"fmt"
+	"errors"
 	"sort"
 	"strings"
 
 	"github.com/andybalholm/cascadia"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/net/html"
+)
+
+var (
+	ErrNoTitles = errors.New("no titles found")
 )
 
 var selectors []titlePuller = []titlePuller{
@@ -78,7 +82,7 @@ func rankTitleCandidates(titles []string) ([]string, error) {
 	var scoredTitles []rankedTitle = []rankedTitle{}
 
 	if len(titles) == 0 {
-		return nil, fmt.Errorf("No titles to rank")
+		return nil, ErrNoTitles
 	}
 
 	for i, t := range titles {
