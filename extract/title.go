@@ -15,23 +15,26 @@ var (
 )
 
 var selectors []titlePuller = []titlePuller{
-	{"og:title", cascadia.MustCompile("meta[property=\"og:title\"]"), attrValueFor("content")},
-	{"twitter:title", cascadia.MustCompile("meta[property=\"twitter:title\"]"), attrValueFor("content")},
+	{"og:title", cascadia.MustCompile("meta[property=\"og:title\"]"), attrValueFor("content"), 1},
+	{"twitter:title", cascadia.MustCompile("meta[property=\"twitter:title\"]"), attrValueFor("content"), 1},
 	// also handle the incorrect [meta name=""] tags, as they seem fairly prevalent
-	{"og:title", cascadia.MustCompile("meta[name=\"og:title\"]"), attrValueFor("content")},
-	{"twitter:title", cascadia.MustCompile("meta[name=\"twitter:title\"]"), attrValueFor("content")},
+	{"og:title", cascadia.MustCompile("meta[name=\"og:title\"]"), attrValueFor("content"), 1},
+	{"twitter:title", cascadia.MustCompile("meta[name=\"twitter:title\"]"), attrValueFor("content"), 1},
 	// -----
-	{"title", cascadia.MustCompile("title"), textContentFor},
-	{"h1", cascadia.MustCompile("h1"), textContentFor},
-	{"h2", cascadia.MustCompile("h2"), textContentFor},
-	{"h3", cascadia.MustCompile("h3"), textContentFor},
-	{".title", cascadia.MustCompile(".title"), textContentFor},
+	{"title", cascadia.MustCompile("title"), textContentFor, 2},
+	{"h1", cascadia.MustCompile("h1"), textContentFor, 3},
+	{"h2", cascadia.MustCompile("h2"), textContentFor, 0},
+	{"h3", cascadia.MustCompile("h3"), textContentFor, 0},
+	{".title", cascadia.MustCompile(".title"), textContentFor, 0},
 }
 
 // Titles find title candidates from a root html.Node,
 // and returns a ranked, unique set
 func Titles(root *html.Node) ([]string, error) {
-	var titleCandidates, rankedCandidates, uniqueCandidates []string
+	var (
+		titleCandidates                    []rankedTitle
+		rankedCandidates, uniqueCandidates []string
+	)
 
 	titleCandidates, _ = getTitleCandidates(root)
 	rankedCandidates, _ = rankTitleCandidates(titleCandidates)
@@ -45,8 +48,8 @@ func Titles(root *html.Node) ([]string, error) {
 	return uniqueCandidates, nil
 }
 
-func getTitleCandidates(res *html.Node) ([]string, error) {
-	var titles []string = []string{}
+func getTitleCandidates(res *html.Node) ([]rankedTitle, error) {
+	var titles []rankedTitle = []rankedTitle{}
 
 	for _, sel := range selectors {
 		titleNode := cascadia.Query(res, sel.Selector)
@@ -61,7 +64,7 @@ func getTitleCandidates(res *html.Node) ([]string, error) {
 
 			trimmedTitle := strings.TrimSpace(titleText)
 			if len(trimmedTitle) > 0 {
-				titles = append(titles, trimmedTitle)
+				titles = append(titles, rankedTitle{trimmedTitle, sel.BaseScore})
 				log.Debugf("Found title using %s: '%s'", sel.Name, trimmedTitle)
 			}
 		}
@@ -78,7 +81,7 @@ const (
 	includedByAnother = 1 // this is probably the site name
 )
 
-func rankTitleCandidates(titles []string) ([]string, error) {
+func rankTitleCandidates(titles []rankedTitle) ([]string, error) {
 	var scoredTitles []rankedTitle = []rankedTitle{}
 
 	if len(titles) == 0 {
@@ -86,7 +89,7 @@ func rankTitleCandidates(titles []string) ([]string, error) {
 	}
 
 	for i, t := range titles {
-		rt := rankedTitle{t, 0}
+		rt := rankedTitle{t.Title, t.Score}
 		for j, t2 := range titles {
 			if i == j {
 				continue
@@ -97,11 +100,11 @@ func rankTitleCandidates(titles []string) ([]string, error) {
 				rt.Score += exactMatch
 			}
 			// - It is contained by another title
-			if strings.Contains(t2, t) {
+			if strings.Contains(t2.Title, t.Title) {
 				rt.Score += includedByAnother
 			}
 			// - It contains another title
-			if strings.Contains(t, t2) {
+			if strings.Contains(t.Title, t2.Title) {
 				rt.Score += includesAnother
 			}
 		}

@@ -15,6 +15,7 @@ type titlePuller struct {
 	Name      string
 	Selector  cascadia.Selector
 	Extractor func(*html.Node) (string, error)
+	BaseScore int
 }
 
 type rankedTitle struct {
