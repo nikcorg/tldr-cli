@@ -63,10 +63,26 @@ func getTitleCandidates(res *html.Node) ([]rankedTitle, error) {
 			}
 
 			trimmedTitle := strings.TrimSpace(titleText)
-			if len(trimmedTitle) > 0 {
-				titles = append(titles, rankedTitle{trimmedTitle, sel.BaseScore})
-				log.Debugf("Found title using %s: '%s'", sel.Name, trimmedTitle)
+			if len(trimmedTitle) == 0 {
+				continue
 			}
+
+			log.Debugf("Found title using %s: '%s'", sel.Name, trimmedTitle)
+
+			exists := false
+			for _, t := range titles {
+				if t.Title == trimmedTitle {
+					exists = true
+					break
+				}
+			}
+
+			if exists {
+				log.Debugf("Skipping duplicate title")
+				continue
+			}
+
+			titles = append(titles, rankedTitle{trimmedTitle, sel.BaseScore})
 		}
 	}
 
