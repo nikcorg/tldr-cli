@@ -6,6 +6,7 @@ import (
 	"github.com/nikcorg/tldr-cli/storage"
 )
 
+// WithCommand executes an external program to sync the local with a remote
 func (s *Sync) WithCommand(sources []*storage.Source) error {
 	var args []string = []string{s.config.Storage.Path}
 

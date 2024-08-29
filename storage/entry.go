@@ -30,10 +30,12 @@ func (e *Entry) Contains(needle string) bool {
 	return false
 }
 
+// SetDeleted sets the deleted state of the entry
 func (e *Entry) SetDeleted(v bool) {
 	e.deleted = v
 }
 
+// Deleted returns the deleted state of the entry
 func (e *Entry) Deleted() bool {
 	return e.deleted
 }

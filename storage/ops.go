@@ -46,7 +46,7 @@ func (s *Storage) Load() (*Source, error) {
 func (s *Storage) Save(source *Source) error {
 	yamlString, err := yaml.Marshal(source.Records)
 	if err != nil {
-		return fmt.Errorf("Error serialising yaml: %w", err)
+		return fmt.Errorf("error serialising yaml: %w", err)
 	}
 
 	log.Debugf("Marshalled %d entries into %d bytes", source.Size(), len(yamlString))
@@ -67,12 +67,12 @@ func (s *Storage) readSource(fullSourcePath string) ([]byte, error) {
 		log.Debugf("Source file does not exist: %s", fullSourcePath)
 		return []byte{}, nil
 	} else if err != nil {
-		return nil, fmt.Errorf("Error reading source: %w", err)
+		return nil, fmt.Errorf("error reading source: %w", err)
 	}
 
 	source, err = os.ReadFile(fullSourcePath)
 	if err != nil {
-		return nil, fmt.Errorf("Error reading %s: %w", fullSourcePath, err)
+		return nil, fmt.Errorf("error reading %s: %w", fullSourcePath, err)
 	}
 
 	log.Debugf("Read %d bytes from %s", len(source), fullSourcePath)
@@ -85,13 +85,13 @@ func (s *Storage) writeSource(fullSourcePath string, b []byte) error {
 
 	err = os.MkdirAll(s.config.Storage.Path, 0755)
 	if err != nil && !os.IsExist(err) {
-		return fmt.Errorf("Error creating data dir: %s %w", s.config.Storage.Path, err)
+		return fmt.Errorf("error creating data dir: %s %w", s.config.Storage.Path, err)
 	}
 
 	err = os.WriteFile(fullSourcePath, b, 0644)
 	if err != nil && !os.IsNotExist(err) {
 		log.Debugf("Error writing %s: %s", fullSourcePath, err)
-		return fmt.Errorf("Error writing %s: %w", fullSourcePath, err)
+		return fmt.Errorf("error writing %s: %w", fullSourcePath, err)
 	}
 
 	log.Debugf("Wrote %d bytes into %s", len(b), fullSourcePath)

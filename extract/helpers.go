@@ -24,11 +24,11 @@ func textContentFor(n *html.Node) (string, error) {
 	for currentNode := n.FirstChild; currentNode != nil; currentNode = currentNode.NextSibling {
 		switch currentNode.Type {
 		case html.ElementNode:
-			if sub, err := textContentFor(currentNode); err != nil {
+			sub, err := textContentFor(currentNode)
+			if err != nil {
 				return "", err
-			} else {
-				fragments = append(fragments, sub)
 			}
+			fragments = append(fragments, sub)
 
 		case html.TextNode:
 			fragments = append(fragments, strings.TrimSpace(currentNode.Data))

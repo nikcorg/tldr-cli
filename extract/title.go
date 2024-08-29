@@ -11,6 +11,7 @@ import (
 )
 
 var (
+	// ErrNoTitles is returned when no titles can be extracted from the source
 	ErrNoTitles = errors.New("no titles found")
 )
 
