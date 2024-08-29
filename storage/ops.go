@@ -2,7 +2,6 @@ package storage
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/nikcorg/tldr-cli/config"
@@ -71,7 +70,7 @@ func (s *Storage) readSource(fullSourcePath string) ([]byte, error) {
 		return nil, fmt.Errorf("Error reading source: %w", err)
 	}
 
-	source, err = ioutil.ReadFile(fullSourcePath)
+	source, err = os.ReadFile(fullSourcePath)
 	if err != nil {
 		return nil, fmt.Errorf("Error reading %s: %w", fullSourcePath, err)
 	}
@@ -89,7 +88,7 @@ func (s *Storage) writeSource(fullSourcePath string, b []byte) error {
 		return fmt.Errorf("Error creating data dir: %s %w", s.config.Storage.Path, err)
 	}
 
-	err = ioutil.WriteFile(fullSourcePath, b, 0644)
+	err = os.WriteFile(fullSourcePath, b, 0644)
 	if err != nil && !os.IsNotExist(err) {
 		log.Debugf("Error writing %s: %s", fullSourcePath)
 		return fmt.Errorf("Error writing %s: %w", fullSourcePath, err)

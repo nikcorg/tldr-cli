@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"strings"
@@ -46,7 +45,7 @@ func NewWithDefaults() *Settings {
 func (s *Settings) Load(configFile string) error {
 	s.ConfigPath = defaultConfigFilename(configFile, path.Join(configDir, configFileName))
 
-	bytes, err := ioutil.ReadFile(s.ConfigPath)
+	bytes, err := os.ReadFile(s.ConfigPath)
 	if os.IsNotExist(err) {
 		return ErrConfigFileNotFound
 	} else if err != nil {
@@ -82,7 +81,7 @@ func (s *Settings) Save(configFile string) error {
 
 	log.Debugf("writing %d bytes to %s", len(bytes), fullPath)
 
-	err = ioutil.WriteFile(fullPath, bytes, 0644)
+	err = os.WriteFile(fullPath, bytes, 0644)
 	if err != nil {
 		return err
 	}
