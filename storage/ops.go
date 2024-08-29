@@ -90,7 +90,7 @@ func (s *Storage) writeSource(fullSourcePath string, b []byte) error {
 
 	err = os.WriteFile(fullSourcePath, b, 0644)
 	if err != nil && !os.IsNotExist(err) {
-		log.Debugf("Error writing %s: %s", fullSourcePath)
+		log.Debugf("Error writing %s: %s", fullSourcePath, err)
 		return fmt.Errorf("Error writing %s: %w", fullSourcePath, err)
 	}
 
