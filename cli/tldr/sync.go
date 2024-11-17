@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -60,5 +61,5 @@ func (s *syncCmd) simpleSync() error {
 }
 
 func (s *syncCmd) multiSync() error {
-	return fmt.Errorf("Sync with storage rotation not yet implemented")
+	return errors.New("sync with storage rotation not yet implemented")
 }
